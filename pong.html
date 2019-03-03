@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+<meta charset="utf-8" />
+</head>
+<body>
+<script>
+
+
+//The ball or the puck
+var puck = {
+  x: 225,
+  y: 100,
+  vx: -5,
+  vy: 5,
+  size: 10,
+}
+
+
+var scoreR = 0; //Score Right
+var scoreL = 0; //Score Left
+
+var leftY = 200; //Left hand side player
+var rightY = 200; //Left hand side player
+var playerWidth = 20; //Width of paddle
+var playerHeight = 75; //Height of paddle
+var playerSpeed = 9; //Speed of paddle
+
+function setup() {
+  createCanvas(550, 400);
+
+}
+
+function draw() {
+
+  background(0);
+
+  //Maintain Score
+  //Left Player Score
+  fill(255, 255, 255);
+  text(scoreL, 70, 50);
+
+  //Right Player Score
+  fill(255, 255, 255);
+  text(scoreR, width / 2 + 200, 50);
+
+
+  //Check if Right player scored
+  if (puck.x < 0) {
+    scoreR++
+    rectMode(CENTER);
+    puck.x = width / 2;
+    puck.y = random(400);
+    rect(puck.x, puck.y, puck.size, puck.size, )
+    puck.x += puck.vx;
+    puck.y += puck.vy;
+  }
+
+  //Check if Left player scored
+  if (puck.x > width) {
+    scoreL++
+    rectMode(CENTER);
+    puck.x = width / 2;
+    puck.y = random(400);
+    rect(puck.x, puck.y, puck.size, puck.size, )
+    puck.x += puck.vx;
+    puck.y += puck.vy;
+  }
+
+
+
+  //Draw Line
+  stroke(255);
+  line(width / 2, 0, width / 2, height);
+
+
+  //DRAW THE PUCK
+  rectMode(CENTER);
+  rect(puck.x, puck.y, puck.size, puck.size, )
+
+  //Draw left player
+  rectMode(CORNER);
+  rect(0, leftY, playerWidth, playerHeight);
+
+  //Draw right player
+  rectMode(CORNER);
+  rect(width - playerWidth - 1, rightY, playerWidth, playerHeight);
+
+  //Update puck position
+  puck.x += puck.vx;
+  puck.y += puck.vy;
+
+
+  //Check if puck hits the top or bottom
+  if (puck.y < 0 || puck.y > height) {
+    puck.vy = puck.vy * -1;
+  }
+
+  //Read input to update player position
+  if (keyIsDown(UP_ARROW)) {
+    rightY -= playerSpeed;
+  }
+
+  if (keyIsDown(DOWN_ARROW)) {
+    rightY += playerSpeed;
+  }
+
+  //65 is A 
+  if (keyIsDown(65)) {
+    leftY -= playerSpeed;
+  }
+  //90 is Z
+  if (keyIsDown(90)) {
+    leftY += playerSpeed;
+  }
+
+  //Constrain paddles ot screen
+  if (leftY < 0) {
+    leftY = 0;
+  }
+
+  if (rightY < 0) {
+    rightY = 0;
+  }
+
+  if (rightY > height - playerHeight) {
+    rightY = height - playerHeight;
+  }
+
+
+  if (leftY > height - playerHeight) {
+    leftY = height - playerHeight;
+  }
+
+
+  //Check if puck hitting left paddle
+  if (puck.x < playerWidth) {
+    if (puck.y > leftY && puck.y < leftY + playerHeight) {
+      puck.vx = puck.vx * -1;
+    }
+  }
+
+  //Check if puck hitting right paddle
+  if (puck.x > width - playerWidth) {
+    if (puck.y > rightY && puck.y < rightY + playerHeight) {
+      puck.vx = puck.vx * -1;
+    }
+  }
+
+
+
+
+}
+
+</script>
+</body>
+</html>
